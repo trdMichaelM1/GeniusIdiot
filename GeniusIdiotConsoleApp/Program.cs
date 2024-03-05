@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.IO;
 
 namespace GeniusIdiotConsoleApp
 {
@@ -108,6 +110,26 @@ namespace GeniusIdiotConsoleApp
             }
         }
 
+        static void SaveResult(string userName, int countRightAnswers, string diagnosis)
+        {
+            string fileName = "data.csv";
+            string currentDirectory = Environment.CurrentDirectory;
+            string path = $@"{currentDirectory}\{fileName}";
+
+            if (!File.Exists(path))
+            {
+                using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+                {
+                    sw.WriteLine("ФИО;Количество правильных ответов;Диагноз;");
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                sw.WriteLine($"{userName};{countRightAnswers.ToString()};{diagnosis};");
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Добро пожаловать на тестирование!");
@@ -151,8 +173,10 @@ namespace GeniusIdiotConsoleApp
                         countRightAnswers++;
                 }
 
+                string diagnosis = GetDiagnosis(amountQuestions, countRightAnswers);
                 Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
-                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{GetDiagnosis(amountQuestions, countRightAnswers)}\"!");
+                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{diagnosis}\"!");
+                SaveResult(userName, countRightAnswers, diagnosis);
                 oneMoreTime = GoOneMoreTime(userName);
             } while (oneMoreTime);
 
