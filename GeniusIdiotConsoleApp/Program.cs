@@ -32,8 +32,9 @@ namespace GeniusIdiotConsoleApp
             return answers;
         }
 
-        static string GetDiagnosis(int amountRightAnswers)
+        static string GetDiagnosis(int amountQuestions, int amountRightAnswers)
         {
+            int score = (int)((amountRightAnswers / (double)amountQuestions) * 100);
             string[] diagnoses = new string[]
             {
                 "кретин",
@@ -44,7 +45,33 @@ namespace GeniusIdiotConsoleApp
                 "гений"
             };
 
-            return diagnoses[amountRightAnswers];
+            int index = 0;
+            if (score == 0)
+            {
+                index = 0;
+            }
+            else if (score > 0 && score <= 20)
+            {
+                index = 1;
+            }
+            else if (score > 20 && score <= 40)
+            {
+                index = 2;
+            }
+            else if (score > 40 && score <= 60)
+            {
+                index = 3;
+            }
+            else if (score > 60 && score <= 80)
+            {
+                index = 4;
+            }
+            else if (score > 80 && score <= 100)
+            {
+                index = 5;
+            }
+
+            return diagnoses[index];
         }
 
         static int[] GetOrderOfQuestions(int amountQuestions)
@@ -125,7 +152,7 @@ namespace GeniusIdiotConsoleApp
                 }
 
                 Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
-                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{GetDiagnosis(countRightAnswers)}\"!");
+                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{GetDiagnosis(amountQuestions, countRightAnswers)}\"!");
                 oneMoreTime = GoOneMoreTime(userName);
             } while (oneMoreTime);
 
