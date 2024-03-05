@@ -95,11 +95,11 @@ namespace GeniusIdiotConsoleApp
             return orderOfQuestions;
         }
 
-        static bool GoOneMoreTime(string userName)
+        static bool ConfirmQuestion(string name, string message)
         {
             while (true)
             {
-                Console.WriteLine($"{userName}, хотели бы Вы пройти тест еще раз? (да\\нет)");
+                Console.WriteLine($@"{name}, {message} (да\нет)");
                 string userAnswer = Console.ReadLine().ToLower();
                 switch (userAnswer)
                 {
@@ -110,11 +110,17 @@ namespace GeniusIdiotConsoleApp
             }
         }
 
-        static void SaveResult(string userName, int countRightAnswers, string diagnosis)
+        static string GetPathFile()
         {
             string fileName = "data.csv";
             string currentDirectory = Environment.CurrentDirectory;
             string path = $@"{currentDirectory}\{fileName}";
+            return path;
+        }
+
+        static void SaveResult(string userName, int countRightAnswers, string diagnosis)
+        {
+            string path = GetPathFile();
 
             if (!File.Exists(path))
             {
@@ -127,6 +133,36 @@ namespace GeniusIdiotConsoleApp
             using (StreamWriter sw = new StreamWriter(path, true, Encoding.UTF8))
             {
                 sw.WriteLine($"{userName};{countRightAnswers.ToString()};{diagnosis};");
+            }
+        }
+
+        static string GetPatternLine(char symbol, int amount)
+        {
+            string line = string.Empty;
+            for (int i = 0; i < amount; i++)
+            {
+                line += symbol.ToString();
+            }
+            return line;
+        }
+
+        static void ShowResults()
+        {
+            string path = GetPathFile();
+
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
+                {
+                    string[] datas = sr.ReadLine().Split(';');
+                    Console.WriteLine($"| {datas[0],-13}| {datas[1],-32}| {datas[2],-13}|");
+                    Console.WriteLine($"|{GetPatternLine('-', 14)}|{GetPatternLine('-', 33)}|{GetPatternLine('-', 14)}|");
+                    while (sr.Peek() >= 0)
+                    {
+                        datas = sr.ReadLine().Split(';');
+                        Console.WriteLine($"| {datas[0],-13}| {datas[1],-32}| {datas[2],-13}|");
+                    }
+                }
             }
         }
 
@@ -177,7 +213,11 @@ namespace GeniusIdiotConsoleApp
                 Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
                 Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{diagnosis}\"!");
                 SaveResult(userName, countRightAnswers, diagnosis);
-                oneMoreTime = GoOneMoreTime(userName);
+
+                if (ConfirmQuestion(userName, "хотите посмотреть все результаты?"))
+                    ShowResults();
+
+                oneMoreTime = ConfirmQuestion(userName, "хотели бы Вы пройти тест еще раз?");
             } while (oneMoreTime);
 
             Console.ReadKey();
