@@ -4,6 +4,62 @@ namespace GeniusIdiotConsoleApp
 {
     internal class Program
     {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Добро пожаловать на тестирование!");
+            Console.Write("Пожалуйста представьтесь: ");
+            string userName = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(userName))
+                userName = "NoName";
+
+            string[] questions = GetQuestions();
+            int[] answers = GetAnswers();
+
+            if (questions.Length != answers.Length)
+                throw new ArgumentException("Количество вопросов не соответствует количеству ответов");
+
+            int amountQuestions = questions.Length;
+            bool oneMoreTime = default;
+            do
+            {
+                int countRightAnswers = 0;
+                int[] orderOfQuestions = GetOrderOfQuestions(amountQuestions);
+
+                for (int i = 0; i < orderOfQuestions.Length; i++)
+                {
+                    int index = orderOfQuestions[i];
+                    Console.WriteLine($"Вопрос №{i + 1}");
+                    Console.WriteLine(questions[index]);
+                    int userAnswer = -1;
+                    try
+                    {
+                        userAnswer = Convert.ToInt32(Console.ReadLine());
+
+                    }
+                    catch (FormatException)
+                    {
+                        continue;
+                    }
+
+                    int rightAnswer = answers[index];
+                    if (userAnswer == rightAnswer)
+                        countRightAnswers++;
+                }
+
+                string diagnosis = GetDiagnosis(amountQuestions, countRightAnswers);
+                Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
+                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{diagnosis}\"!");
+                DataHelper.SaveResult(userName, countRightAnswers, diagnosis);
+
+                if (ConfirmQuestion(userName, "хотите посмотреть все результаты?"))
+                    DataHelper.ShowResults();
+
+                oneMoreTime = ConfirmQuestion(userName, "хотели бы Вы пройти тест еще раз?");
+            } while (oneMoreTime);
+
+            Console.ReadKey();
+        }
         static string[] GetQuestions()
         {
             string[] questions = new string[]
@@ -106,63 +162,6 @@ namespace GeniusIdiotConsoleApp
                     default: continue;
                 }
             }
-        }
-
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Добро пожаловать на тестирование!");
-            Console.Write("Пожалуйста представьтесь: ");
-            string userName = Console.ReadLine();
-
-            if (string.IsNullOrEmpty(userName))
-                userName = "NoName";
-
-            string[] questions = GetQuestions();
-            int[] answers = GetAnswers();
-
-            if (questions.Length != answers.Length)
-                throw new ArgumentException("Количество вопросов не соответствует количеству ответов");
-
-            int amountQuestions = questions.Length;
-            bool oneMoreTime = default;
-            do
-            {
-                int countRightAnswers = 0;
-                int[] orderOfQuestions = GetOrderOfQuestions(amountQuestions);
-
-                for (int i = 0; i < orderOfQuestions.Length; i++)
-                {
-                    int index = orderOfQuestions[i];
-                    Console.WriteLine($"Вопрос №{i + 1}");
-                    Console.WriteLine(questions[index]);
-                    int userAnswer = -1;
-                    try
-                    {
-                        userAnswer = Convert.ToInt32(Console.ReadLine());
-
-                    }
-                    catch (FormatException)
-                    {
-                        continue;
-                    }
-
-                    int rightAnswer = answers[index];
-                    if (userAnswer == rightAnswer)
-                        countRightAnswers++;
-                }
-
-                string diagnosis = GetDiagnosis(amountQuestions, countRightAnswers);
-                Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
-                Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{diagnosis}\"!");
-                DataHelper.SaveResult(userName, countRightAnswers, diagnosis);
-
-                if (ConfirmQuestion(userName, "хотите посмотреть все результаты?"))
-                    DataHelper.ShowResults();
-
-                oneMoreTime = ConfirmQuestion(userName, "хотели бы Вы пройти тест еще раз?");
-            } while (oneMoreTime);
-
-            Console.ReadKey();
         }
     }
 }
