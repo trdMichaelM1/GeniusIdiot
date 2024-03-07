@@ -8,7 +8,7 @@ namespace GeniusIdiotConsoleApp
         {
             Console.WriteLine("Добро пожаловать на тестирование!");
             Console.Write("Пожалуйста представьтесь: ");
-            string userName = Console.ReadLine();
+            var userName = Console.ReadLine();
 
             if (string.IsNullOrEmpty(userName))
                 userName = "NoName";
@@ -19,7 +19,7 @@ namespace GeniusIdiotConsoleApp
             if (questions.Length != answers.Length)
                 throw new ArgumentException("Количество вопросов не соответствует количеству ответов");
 
-            int amountQuestions = questions.Length;
+            var amountQuestions = questions.Length;
             bool oneMoreTime = default;
             do
             {
@@ -137,11 +137,11 @@ namespace GeniusIdiotConsoleApp
             for (int i = 0; i < orderOfQuestions.Length; i++)
                 orderOfQuestions[i] = i;
 
-            Random random = new Random();
+            var random = new Random();
             for (int i = orderOfQuestions.Length - 1; i >= 1; i--)
             {
-                int j = random.Next(i + 1);
-                int temp = orderOfQuestions[j];
+                var j = random.Next(i + 1);
+                var temp = orderOfQuestions[j];
                 orderOfQuestions[j] = orderOfQuestions[i];
                 orderOfQuestions[i] = temp;
             }
@@ -154,7 +154,7 @@ namespace GeniusIdiotConsoleApp
             while (true)
             {
                 Console.WriteLine($@"{name}, {message} (да\нет)");
-                string userAnswer = Console.ReadLine().ToLower();
+                var userAnswer = Console.ReadLine().ToLower();
                 switch (userAnswer)
                 {
                     case "да": return true;
