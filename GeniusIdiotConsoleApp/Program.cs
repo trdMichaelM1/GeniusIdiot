@@ -13,8 +13,8 @@ namespace GeniusIdiotConsoleApp
             if (string.IsNullOrEmpty(userName))
                 userName = "NoName";
 
-            string[] questions = GetQuestions();
-            int[] answers = GetAnswers();
+            var questions = GetQuestions();
+            var answers = GetAnswers();
 
             if (questions.Length != answers.Length)
                 throw new ArgumentException("Количество вопросов не соответствует количеству ответов");
@@ -24,7 +24,7 @@ namespace GeniusIdiotConsoleApp
             do
             {
                 int countRightAnswers = 0;
-                int[] orderOfQuestions = GetOrderOfQuestions(amountQuestions);
+                var orderOfQuestions = GetOrderOfQuestions(amountQuestions);
 
                 for (int i = 0; i < orderOfQuestions.Length; i++)
                 {
@@ -47,7 +47,7 @@ namespace GeniusIdiotConsoleApp
                         countRightAnswers++;
                 }
 
-                string diagnosis = GetDiagnosis(amountQuestions, countRightAnswers);
+                var diagnosis = GetDiagnosis(amountQuestions, countRightAnswers);
                 Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
                 Console.WriteLine($"{userName}, Ваш диагноз: Вы \"{diagnosis}\"!");
                 DataHelper.SaveResult(userName, countRightAnswers, diagnosis);
