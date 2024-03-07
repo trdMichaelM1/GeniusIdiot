@@ -18,13 +18,13 @@ namespace GeniusIdiotConsoleApp
         {
             if (!File.Exists(path))
             {
-                using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+                using (var sw = new StreamWriter(path, false, Encoding.UTF8))
                 {
                     sw.WriteLine("ФИО;Количество правильных ответов;Диагноз;");
                 }
             }
 
-            using (StreamWriter sw = new StreamWriter(path, true, Encoding.UTF8))
+            using (var sw = new StreamWriter(path, true, Encoding.UTF8))
             {
                 sw.WriteLine($"{userName};{countRightAnswers.ToString()};{diagnosis};");
             }
@@ -32,7 +32,7 @@ namespace GeniusIdiotConsoleApp
 
         private static string GetPatternLine(char symbol, int amount)
         {
-            string line = string.Empty;
+            var line = string.Empty;
             for (int i = 0; i < amount; i++)
             {
                 line += symbol.ToString();
@@ -44,7 +44,7 @@ namespace GeniusIdiotConsoleApp
         {
             if (File.Exists(path))
             {
-                using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
+                using (var sr = new StreamReader(path, Encoding.UTF8))
                 {
                     string[] datas = sr.ReadLine().Split(';');
                     Console.WriteLine($"| {datas[0],-13}| {datas[1],-32}| {datas[2],-13}|");

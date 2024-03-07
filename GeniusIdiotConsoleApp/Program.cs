@@ -62,7 +62,7 @@ namespace GeniusIdiotConsoleApp
         }
         static string[] GetQuestions()
         {
-            string[] questions = new string[]
+            var questions = new string[]
             {
                 "Сколько будет два плюс два умноженное на два?",
                 "Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?",
@@ -76,7 +76,7 @@ namespace GeniusIdiotConsoleApp
 
         static int[] GetAnswers()
         {
-            int[] answers = new int[]
+            var answers = new int[]
             {
                 6,
                 9,
@@ -91,7 +91,7 @@ namespace GeniusIdiotConsoleApp
         static string GetDiagnosis(int amountQuestions, int amountRightAnswers)
         {
             int score = (int)((amountRightAnswers / (double)amountQuestions) * 100);
-            string[] diagnoses = new string[]
+            var diagnoses = new string[]
             {
                 "кретин",
                 "идиот",
@@ -132,7 +132,7 @@ namespace GeniusIdiotConsoleApp
 
         static int[] GetOrderOfQuestions(int amountQuestions)
         {
-            int[] orderOfQuestions = new int[amountQuestions];
+            var orderOfQuestions = new int[amountQuestions];
 
             for (int i = 0; i < orderOfQuestions.Length; i++)
                 orderOfQuestions[i] = i;
